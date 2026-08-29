@@ -1,0 +1,235 @@
+:root { --font-heading: 'Comfortaa', cursive, sans-serif; --font-handwrite: 'Patrick Hand', cursive, sans-serif; --font-body: 'Quicksand', sans-serif; --gold-sun: #f6c042; --warm-cream: #fdfaf3; --cute-pink: #fbcfe8; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-body); color: var(--warm-cream); overflow-x: hidden; background-color: #122117; overflow-y: hidden; }
+
+#bg-overlay { position: fixed; inset: 0; background-size: cover; background-position: center; transition: background-image 0.8s ease-in-out, filter 0.8s ease; z-index: 0; filter: brightness(0.85); }
+#leaf-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 9999; pointer-events: none; }
+
+::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.5); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: var(--cute-pink); }
+
+.screen { position: absolute; inset: 0; z-index: 2; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-align: center; opacity: 0; transform: translateY(15px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.screen.active { display: flex; opacity: 1; transform: translateY(0); }
+.screen-scrollable { justify-content: flex-start; overflow-y: auto; scroll-behavior: smooth; padding-bottom: 80px; }
+
+.cute-border { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(12px); border: 3px solid rgba(255, 255, 255, 0.6); border-radius: 28px; box-shadow: 0 12px 35px rgba(0,0,0,0.3), inset 0 0 15px rgba(255,255,255,0.4); }
+
+/* --- Nới rộng thẻ kính mờ mở đầu --- */
+.intro-card { 
+  padding: 3rem 2.2rem; 
+  max-width: 750px; /* Nới rộng từ 600px lên 750px để ôm trọn bảng tên */
+  width: 95%; /* Tự động bo gọn trên màn hình nhỏ */
+}
+
+/* --- Banner Mở Đầu Tự Động Co Giãn --- */
+.hero-badge { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 12px; 
+  font-family: var(--font-heading); 
+  /* Chữ sẽ tự động co giãn từ 0.9rem đến 1.25rem để luôn vừa khung */
+  font-size: clamp(0.9rem, 2.5vw, 1.25rem); 
+  font-weight: 700;
+  letter-spacing: 2px; 
+  color: #fff; 
+  background: linear-gradient(135deg, #84cc16, #166534); 
+  padding: 0.7rem 1.8rem; 
+  border-radius: 99px; 
+  margin-bottom: 2rem; 
+  border: 2px solid rgba(255, 255, 255, 0.8); 
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  animation: badgeBreath 3s ease-in-out infinite; 
+  white-space: nowrap; 
+  max-width: 100%; /* Khóa chặn không cho tràn ngang */
+}
+
+/* Kích thước sticker Tighnari tự co giãn */
+.badge-icon {
+  /* Sticker sẽ tự động to nhỏ từ 35px đến 55px tùy độ rộng màn hình */
+  height: clamp(35px, 6vw, 55px); 
+  width: auto;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  margin-top: -3px; 
+}
+.icon-right { transform: scaleX(-1); }
+
+@keyframes badgeBreath { 
+  0% { box-shadow: 0 0 10px rgba(132, 204, 22, 0.3); transform: translateY(0); } 
+  50% { box-shadow: 0 0 25px rgba(132, 204, 22, 0.8); transform: translateY(-3px); } 
+  100% { box-shadow: 0 0 10px rgba(132, 204, 22, 0.3); transform: translateY(0); } 
+}
+
+/* Responsive cho điện thoại (thu nhỏ lại để khỏi bị tràn màn hình) */
+@media (max-width: 768px) {
+  .hero-badge { font-size: 1rem; padding: 0.6rem 1.2rem; white-space: normal; text-align: center; gap: 8px;}
+  .badge-icon { height: 45px; }
+}
+
+/* --- Màn Hình Lóe Sáng Chuyển Cảnh --- */
+#white-flash {
+  position: fixed;
+  inset: 0;
+  background-color: #ffffff;
+  z-index: 999999;
+  opacity: 0;
+  pointer-events: none; /* Bình thường không cản trở thao tác bấm */
+  transition: opacity 1.8s ease-in-out; /* Tốc độ mờ dần và sáng dần là 1.8s, cực chill */
+}
+#white-flash.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Kích thước và bóng đổ cho sticker Tighnari */
+.badge-icon {
+  height: 40px; 
+  width: auto;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.4));
+  animation: floatCard 3s ease-in-out infinite;
+}
+
+/* Lật ngược mặt sticker bên phải */
+.icon-right {
+  transform: scaleX(-1);
+}
+
+/* Chuyển động thở (bay nhẹ lên xuống và tỏa bóng xanh) */
+@keyframes badgeBreath { 
+  0% { box-shadow: 0 0 10px rgba(132, 204, 22, 0.3); transform: translateY(0); } 
+  50% { box-shadow: 0 0 25px rgba(132, 204, 22, 0.8); transform: translateY(-3px); } 
+  100% { box-shadow: 0 0 10px rgba(132, 204, 22, 0.3); transform: translateY(0); } 
+}
+
+/* Chuyển động thở (bay nhẹ lên xuống và tỏa bóng xanh) */
+@keyframes badgeBreath { 
+  0% { box-shadow: 0 0 10px rgba(132, 204, 22, 0.3); transform: translateY(0); } 
+  50% { box-shadow: 0 0 25px rgba(132, 204, 22, 0.8); transform: translateY(-3px); } 
+  100% { box-shadow: 0 0 10px rgba(132, 204, 22, 0.3); transform: translateY(0); } 
+}
+
+/* Chuyển động màu sắc và phát sáng cho badge */
+@keyframes badgeGlow { 
+  0% { background-position: 0% 50%; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.5); transform: scale(1); } 
+  50% { background-position: 100% 50%; box-shadow: 0 5px 30px rgba(244, 63, 94, 0.8); transform: scale(1.05); } 
+  100% { background-position: 0% 50%; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.5); transform: scale(1); } 
+}
+.hero-title { font-family: var(--font-heading); font-size: clamp(2.2rem, 5vw, 3.2rem); text-shadow: 0 4px 15px rgba(0,0,0,0.6); margin-bottom: 1rem; }
+.hero-sub { line-height: 1.6; font-size: 1.1rem; margin-bottom: 2rem; }
+.btn-primary { font-family: var(--font-heading); font-size: 1.1rem; font-weight: bold; color: #5a2e12; background: linear-gradient(135deg, #fde047, #f59e0b); border: none; padding: 1rem 2.5rem; border-radius: 999px; cursor: pointer; transition: transform 0.25s, box-shadow 0.25s; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
+.btn-primary:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 12px 25px rgba(245, 158, 11, 0.6); }
+
+.garden-header { margin-bottom: 2rem; padding: 1.5rem 3rem; }
+.pinboard { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2.5rem 3.5rem; width: 100%; max-width: 900px; padding: 1rem 0 120px 0; overflow-y: auto; max-height: 75vh; }
+.polaroid-card { position: relative; z-index: 1; width: 160px; background: #fff; padding: 12px 12px 30px 12px; border-radius: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: pointer; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s; }
+.polaroid-card.locked { filter: grayscale(1) brightness(0.6); cursor: not-allowed; }
+.polaroid-card.read { filter: brightness(0.9); }
+.polaroid-card.unlocked { box-shadow: 0 0 30px rgba(246, 192, 66, 0.9); animation: floatCard 3s infinite ease-in-out; }
+.polaroid-card.unlocked:hover { transform: scale(1.15) !important; z-index: 5; }
+.polaroid-img { width: 100%; aspect-ratio: 1 / 1; height: auto; object-fit: cover; background: #eee; border-radius: 2px; border: 1px solid rgba(0,0,0,0.1); }
+.polaroid-name { font-family: var(--font-handwrite); color: #333; font-size: 1.4rem; margin-top: 8px; font-weight: bold; }
+.tape { position: absolute; width: 70px; height: 22px; background: rgba(255, 255, 255, 0.5); box-shadow: 0 1px 3px rgba(0,0,0,0.2); backdrop-filter: blur(4px); border-radius: 2px; }
+.polaroid-card .tape { top: -10px; left: 50%; transform: translateX(-50%) rotate(-3deg); }
+.polaroid-card:nth-child(1) { transform: rotate(-5deg); } .polaroid-card:nth-child(2) { transform: rotate(4deg); } .polaroid-card:nth-child(3) { transform: rotate(-3deg); } .polaroid-card:nth-child(4) { transform: rotate(6deg); } .polaroid-card:nth-child(5) { transform: rotate(-4deg); } .polaroid-card:nth-child(6) { transform: rotate(5deg); }
+
+.collection-bar { position: fixed; bottom: 25px; right: 25px; padding: 12px 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 10; }
+.collection-title { font-family: var(--font-heading); font-size: 0.9rem; color: #fff; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.collection-items { display: flex; gap: 12px; }
+.item-slot { width: 45px; height: 45px; border-radius: 12px; background: rgba(0,0,0,0.4); border: 2px dashed rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); }
+.item-slot img { width: 85%; height: 85%; object-fit: contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5)); animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+.modal-overlay { position: fixed; inset: 0; z-index: 30; background: rgba(10, 20, 15, 0.7); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal-overlay.active { display: flex; }
+.letter-paper { position: relative; max-width: 650px; width: 100%; max-height: 85vh; overflow-y: auto; border-radius: 20px; padding: 3.5rem 3rem; color: #2d3748; background: linear-gradient(135deg, #ffffff, #fff0f5); border: 10px solid #fff; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 2px dashed rgba(0,0,0,0.15); transform: scale(0.9); opacity: 0; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; }
+.modal-overlay.active .letter-paper { transform: scale(1) rotate(-1deg); opacity: 1; }
+.letter-paper .tape-top { top: -5px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 120px; height: 28px; background: rgba(255, 255, 255, 0.8); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.letter-close { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 1.8rem; cursor: pointer; opacity: 0.5; transition: 0.3s; }
+.letter-close:hover { opacity: 1; transform: rotate(90deg); color: #e11d48; }
+.letter-author { font-family: var(--font-heading); font-size: 2rem; color: inherit; font-weight: bold; }
+.letter-title { font-size: 1rem; opacity: 0.8; margin-top: 5px; font-weight: bold; }
+.letter-divider { text-align: center; font-size: 1.2rem; color: currentColor; opacity: 0.4; margin: 1.5rem 0; letter-spacing: 15px; }
+.letter-body { font-family: var(--font-handwrite); font-size: 1.5rem; line-height: 1.8; white-space: pre-wrap; min-height: 150px; }
+.letter-paper::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
+.letter-paper::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+
+.guide-box { position: fixed; bottom: 25px; left: 25px; z-index: 25; display: none; align-items: flex-end; gap: 0.8rem; max-width: 440px; }
+.guide-box.active { display: flex; }
+.guide-avatars { display: flex; align-items: flex-end; margin-right: -15px; z-index: 2; position: relative; }
+.guide-avatar-klee { width: 80px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); animation: floatCard 3s infinite ease-in-out; position: relative; z-index: 2; margin-right: -25px; }
+.guide-avatar-tighnari { width: 95px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); animation: floatCard 3.5s infinite ease-in-out 1s; }
+.guide-bubble { background: #fff; color: #2d3748; padding: 1.2rem; box-shadow: 0 12px 30px rgba(0,0,0,0.4); border-width: 2px; position: relative; z-index: 1;}
+.guide-name-tag { font-family: var(--font-heading); font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; color: #e11d48; transition: color 0.3s; }
+.guide-name-tag.tighnari-color { color: #15803d; }
+.btn-mini { background: #f43f5e; border: none; color: white; font-family: var(--font-heading); font-size: 0.9rem; padding: 6px 15px; border-radius: 20px; margin-top: 10px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(225, 29, 72, 0.4); }
+.btn-mini:hover { transform: scale(1.05); background: #be123c; }
+
+.scrapbook-container { width: 100%; max-width: 750px; margin: 0 auto; padding: 5rem 10px; display: flex; flex-direction: column; gap: 3.5rem; }
+.scrapbook-title { font-family: var(--font-heading); font-size: 2.5rem; color: var(--gold-sun); text-shadow: 0 3px 8px rgba(0,0,0,0.5); }
+.scrapbook-subtitle { font-size: 1.1rem; opacity: 0.9; }
+.scrapbook-content { display: flex; flex-direction: column; gap: 4rem; align-items: center; }
+.scrapbook-item { position: relative; background: #fff; padding: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); width: 95%; max-width: 550px; border-radius: 4px; cursor: pointer; transition: transform 0.3s ease, z-index 0s; }
+.scrapbook-item:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 20; }
+.scrapbook-item:nth-child(odd) { transform: rotate(2deg); } .scrapbook-item:nth-child(even) { transform: rotate(-2deg); }
+.scrapbook-item img.media-main, .scrapbook-item video { width: 100%; display: block; background: #f8f8f8; border-radius: 2px; }
+.scrapbook-decor-sticker { position: absolute; bottom: -20px; right: -20px; width: 90px; height: auto; filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.5)); transform: rotate(8deg); z-index: 10; pointer-events: none; }
+
+/* ================= CSS CHỮ LƠ LỬNG MỚI (BỎ KHUNG ĐEN) ================= */
+#floating-lyrics-container {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 1000; overflow: hidden;
+}
+
+.floating-lyric {
+  position: absolute;
+  bottom: 5%;
+  max-width: 45%;
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff;
+  /* Đổ bóng chữ nhiều lớp để nổi bật mà không cần mảng đen */
+  text-shadow: 0px 2px 5px rgba(0,0,0,0.9), 0px 4px 15px rgba(0,0,0,1), 0 0 20px var(--gold-sun);
+  padding: 10px 0;
+  opacity: 0;
+  /* Kéo dài thời gian bay để chữ trôi êm ái hơn */
+  animation: floatUpLyric 7s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
+}
+
+.lyric-left { left: 8%; text-align: left; }
+.lyric-right { right: 8%; text-align: right; }
+
+@keyframes floatUpLyric {
+  0% { transform: translateY(40px); opacity: 0; }
+  15% { transform: translateY(0px); opacity: 1; }
+  80% { transform: translateY(-100px); opacity: 1; } /* Chữ trôi lên từ từ */
+  100% { transform: translateY(-140px); opacity: 0; }
+}
+
+.lightbox-overlay { position: fixed; inset: 0; z-index: 99999; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 2rem; }
+.lightbox-overlay.active { display: flex; animation: popIn 0.3s ease; }
+.lightbox-close { position: absolute; top: 20px; right: 30px; background: none; border: none; color: #fff; font-size: 2.5rem; cursor: pointer; transition: 0.3s; }
+.lightbox-close:hover { color: #f43f5e; transform: scale(1.1); }
+.lightbox-content { max-width: 95vw; max-height: 90vh; display: flex; justify-content: center; align-items: center; }
+.lightbox-content img, .lightbox-content video { max-width: 100%; max-height: 85vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); object-fit: contain; }
+
+.finale-wish-box { padding: 3.5rem 2rem; margin-top: 3rem; background: rgba(20, 40, 25, 0.6); }
+.finale-note { font-family: var(--font-handwrite); font-size: 1.8rem; line-height: 1.8; color: #fff; margin-bottom: 2.5rem; }
+.btn-secondary { font-family: var(--font-heading); background: #f59e0b; border: none; color: #fff; padding: 12px 30px; border-radius: 30px; cursor: pointer; transition: 0.3s; font-size: 1.1rem; box-shadow: 0 6px 15px rgba(245, 158, 11, 0.4); }
+.btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.6); }
+
+@keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+@media (max-width: 768px) {
+  .pinboard { gap: 1.5rem; padding-top: 1rem; } .polaroid-card { width: 140px; } .letter-paper { padding: 2.5rem 1.8rem; border-width: 6px; } .collection-bar { bottom: auto; top: 20px; right: 20px; flex-direction: row; border-radius: 20px; padding: 8px 12px; } .collection-title { display: none; }
+  .guide-box { bottom: 15px; left: 15px; max-width: 300px; } .guide-avatar-klee { width: 60px; margin-right: -15px; } .guide-avatar-tighnari { width: 70px; } .guide-bubble { padding: 0.9rem; font-size: 0.9rem; }
+  
+  .floating-lyric { max-width: 85%; font-size: 1.3rem; bottom: 5%; }
+  .lyric-left { left: 5%; text-align: left; }
+  .lyric-right { right: 5%; text-align: right; }
+}
+/* Style cho YouTube Iframe trong sổ Scrapbook */
+.youtube-frame {
+  aspect-ratio: 16 / 9;
+  border-radius: 2px;
+  pointer-events: auto; /* Cho phép bấm xem video */
+}

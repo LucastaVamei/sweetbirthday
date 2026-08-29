@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khu Rừng Kỷ Niệm Của Sweet 🌿</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Trình phát nhạc và Voice -->
+  <audio id="bgm1" loop><source src="assets/bgm/m1.mp3" type="audio/mpeg"></audio>
+  <audio id="bgm2"><source src="assets/bgm/m2.mp3" type="audio/mpeg"></audio>
+  <audio id="sfx-open"><source src="assets/bgm/m3.mp3" type="audio/mpeg"></audio>
+  <audio id="voice-player"></audio>
+
+  <div id="bg-overlay"></div>
+  <canvas id="leaf-canvas"></canvas>
+
+  <!-- ================= MÀN HÌNH 1: MỞ ĐẦU ================= -->
+  <section id="screen-intro" class="screen active">
+    <div class="intro-card cute-border">
+      <div class="hero-badge">
+  <img src="assets/stickers/tighanri.png" class="badge-icon icon-left" alt="Tighnari" />
+  <span>WHISPERS AMONG THE LEAVES</span>
+  <img src="assets/stickers/tighanri.png" class="badge-icon icon-right" alt="Tighnari" />
+</div>
+      <h1 class="hero-title">Happy Birthday Sweet!</h1>
+      <p class="hero-sub">Mọi người đã bí mật treo những bức thư trong khu rừng này. Hãy tìm đọc từng bức và thu thập đủ các món quà nhỏ nhé...</p>
+      <button id="btn-enter" class="btn-primary"><span>Bắt đầu thám hiểm</span> 🍃</button>
+    </div>
+  </section>
+
+  <!-- ================= MÀN HÌNH 2: BẢNG GHIM KỶ NIỆM ================= -->
+  <section id="screen-garden" class="screen">
+    <header class="garden-header cute-border">
+      <div class="hero-badge">BẢNG KỶ NIỆM</div>
+      <p class="garden-hint">Chạm vào từng khung ảnh để đọc thư và nhận quà nha!</p>
+    </header>
+    <div id="pinboard" class="pinboard"></div>
+    <div class="collection-bar cute-border">
+      <div class="collection-title">Túi đồ Của Sweet 🎒</div>
+      <div id="collection-items" class="collection-items"></div>
+    </div>
+  </section>
+
+  <!-- ================= MÀN HÌNH 3: SCRAPBOOK ================= -->
+  <section id="screen-scrapbook" class="screen screen-scrollable">
+    <div class="scrapbook-container">
+      <h2 class="scrapbook-title">Hành trình của bọn mình sẽ vẫn còn tiếp tục nhỉ? 🌟</h2>
+      <p class="scrapbook-subtitle">Kéo xuống để xem lại những kỷ niệm nhé...</p>
+      <div id="scrapbook-content" class="scrapbook-content"></div>
+      <div class="finale-wish-box cute-border">
+        <h2 class="finale-title">Sinh nhật vui vẻ nhé Sweet! 🎂✨</h2>
+        <p id="finale-note" class="finale-note"></p>
+        <button id="btn-replay" class="btn-secondary" onclick="location.reload()">Gấp sổ lại 🌸</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PHỤ ĐỀ ĐIỆN ẢNH BAY LƠ LỬNG ================= -->
+  <div id="floating-lyrics-container"></div>
+
+  <!-- ================= MODAL ĐỌC THƯ ================= -->
+  <div id="letter-modal" class="modal-overlay">
+    <div class="letter-paper">
+      <div class="tape tape-top"></div>
+      <button id="letter-close" class="letter-close" title="Gấp thư lại">✕</button>
+      <div class="letter-header-simple">
+        <h3 id="letter-author" class="letter-author"></h3>
+        <p id="letter-title" class="letter-title"></p>
+      </div>
+      <div class="letter-divider">✿ ✿ ✿</div>
+      <div id="letter-body" class="letter-body"></div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL PHÓNG TO ================= -->
+  <div id="lightbox-modal" class="lightbox-overlay">
+    <button id="lightbox-close" class="lightbox-close" title="Đóng">✕</button>
+    <div id="lightbox-content" class="lightbox-content"></div>
+  </div>
+<!-- ================= HIỆU ỨNG LÓE SÁNG ================= -->
+  <div id="white-flash"></div>
+  <!-- ================= HƯỚNG DẪN VIÊN ================= -->
+  <div id="guide-box" class="guide-box">
+    <div class="guide-avatars">
+      <img src="assets/stickers/kleehuongdan.png" alt="Klee" class="guide-avatar-klee" />
+      <img src="assets/stickers/tighanri.png" alt="Tighnari" class="guide-avatar-tighnari" />
+    </div>
+    <div class="guide-bubble cute-border">
+      <div id="guide-name" class="guide-name-tag">Bé Klee 🍀</div>
+      <p id="guide-text">...</p>
+      <button id="guide-next" class="btn-mini">Tiếp theo ➔</button>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
